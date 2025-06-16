@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust - Your Ultimate Travel Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0)"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/><circle cx="900" cy="800" r="80" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-2);
+            color: white;
+            transform: translateY(0);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* AI Assistant Button */
+        .ai-assistant-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        .ai-assistant-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 25px 50px -12px rgba(240, 147, 251, 0.5);
+        }
+
+        .ai-tooltip {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .ai-assistant-btn:hover .ai-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Destinations Grid */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .destination-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .destination-image {
+            height: 250px;
+            background: var(--gradient-3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .destination-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+            z-index: 1;
+        }
+
+        .destination-image i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: white;
+            z-index: 2;
+        }
+
+        .destination-content {
+            padding: 2rem;
+        }
+
+        .destination-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .destination-content p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .destination-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffc107;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--bg-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Statistics */
+        .stats {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* AI Assistant Modal Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .ai-assistant-modal {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .ai-assistant-wrapper {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        /* Additional AI Assistant Styles */
+        .message {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive AI Assistant */
+        @media (max-width: 768px) {
+            .ai-assistant-wrapper {
+                width: 95% !important;
+                height: 90vh !important;
+            }
+
+            .ai-assistant-wrapper .sidebar {
+                display: none;
+            }
+
+            .ai-assistant-wrapper .main {
+                width: 100% !important;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">Wander Wave</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="./about.html">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Discover Amazing Places</h1>
+            <p>Your journey to extraordinary destinations starts here. Explore the world with our comprehensive travel
+                guide.</p>
+            <div class="cta-buttons">
+                <a href="#destinations" class="btn btn-primary">
+                    <i class="fas fa-compass"></i>
+                    Explore Destinations
+                </a>
+                <a href="#services" class="btn btn-secondary">
+                    <i class="fas fa-map"></i>
+                    Plan Your Trip
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section class="section" id="destinations">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Popular Destinations</h2>
+                <p>Discover breathtaking locations around the world, each offering unique experiences and unforgettable
+                    memories.</p>
+            </div>
+
+            <div class="destinations-grid">
+                <div class="destination-card fade-in">
+                    <div class="destination-image">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div class="destination-content">
+                        <h3>Sigiriya (Lion Rock)</h3>
+                        <p>Experience the majestic beauty of snow-capped peaks, pristine lakes, and charming alpine
+                            villages.</p>
+                        <div class="destination-meta">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.9</span>
+                            </div>
+                            <div class="price">From $1,299</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card fade-in">
+                    <div class="destination-image">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                    <div class="destination-content">
+                        <h3>Beach of ArugamBay</h3>
+                        <p>Relax in paradise with crystal-clear waters, overwater bungalows, and pristine white sand
+                            beaches.</p>
+                        <div class="destination-meta">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                            <div class="price">From $2,499</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card fade-in">
+                    <div class="destination-image">
+                        <i class="fas fa-torii-gate"></i>
+                    </div>
+                    <div class="destination-content">
+                        <h3>Ella</h3>
+                        <p>Immerse yourself in ancient culture, stunning temples, and the timeless beauty of traditional
+                            Japan.</p>
+                        <div class="destination-meta">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.7</span>
+                            </div>
+                            <div class="price">From $899</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card fade-in">
+                    <div class="destination-image">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="destination-content">
+                        <h3>Udawalawa</h3>
+                        <p>Witness spectacular sunsets, explore whitewashed villages, and enjoy the romance of the
+                            Aegean Sea.</p>
+                        <div class="destination-meta">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                            <div class="price">From $1,199</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card fade-in">
+                    <div class="destination-image">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <div class="destination-content">
+                        <h3>Pidurangala</h3>
+                        <p>Adventure into the world's largest tropical rainforest and discover incredible wildlife and
+                            nature.</p>
+                        <div class="destination-meta">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.6</span>
+                            </div>
+                            <div class="price">From $1,599</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card fade-in">
+                    <div class="destination-image">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <div class="destination-content">
+                        <h3>Port City</h3>
+                        <p>Experience the city that never sleeps with world-class attractions, dining, and
+                            entertainment.</p>
+                        <div class="destination-meta">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.5</span>
+                            </div>
+                            <div class="price">From $699</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section features" id="services">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Our Services</h2>
+                <p>Comprehensive travel solutions to make your journey seamless and unforgettable.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-item fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Trip Planning</h3>
+                    <p>Personalized itineraries crafted by travel experts to match your preferences and budget.</p>
+                </div>
+
+                <div class="feature-item fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <h3>Accommodation</h3>
+                    <p>Handpicked hotels, resorts, and unique stays that guarantee comfort and memorable experiences.
+                    </p>
+                </div>
+
+                <div class="feature-item fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3>Flight Booking</h3>
+                    <p>Best flight deals and convenient booking options to get you to your destination hassle-free.</p>
+                </div>
+
+                <div class="feature-item fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Group Tours</h3>
+                    <p>Join like-minded travelers on guided tours led by knowledgeable local guides.</p>
+                </div>
+
+                <div class="feature-item fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock assistance to ensure your travel experience is smooth and worry-free.</p>
+                </div>
+
+                <div class="feature-item fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Travel Insurance</h3>
+                    <p>Comprehensive coverage to protect your investment and give you peace of mind.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="section stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="50000">0</span>
+                    <span class="stat-label">Happy Travelers</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="120">0</span>
+                    <span class="stat-label">Destinations</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="15">0</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="98">0</span>
+                    <span class="stat-label">Satisfaction Rate</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Wander Wave</h3>
+                    <p>Your trusted partner in creating unforgettable travel experiences around the world.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#destinations">Destinations</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@wanderwave.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Travel St, City, Country</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wander Wave All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Assistant Button -->
+    <button class="ai-assistant-btn" id="aiAssistantBtn">
+        <i class="fas fa-robot"></i>
+        <div class="ai-tooltip">Ask AI Assistant</div>
+    </button>
+
+
+    <script>
+
+
+        // AI Assistant Integration Script with respond.js
+        // Make sure to include this script after your respond.js file is loaded
+
+        // Global variables for AI Assistant
+        let isAssistantOpen = false;
+        let assistantContainer = null;
+        let aiResponseSystem = null;
+
+        // Function to dynamically load respond.js if not already loaded
+        function loadRespondJS() {
+            return new Promise((resolve, reject) => {
+                // Check if respond.js is already loaded
+                if (typeof window.generateResponse === 'function' || typeof window.getAIResponse === 'function') {
+                    resolve();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = './respond.js';
+                script.onload = () => {
+                    console.log('respond.js loaded successfully');
+                    resolve();
+                };
+                script.onerror = () => {
+                    console.error('Failed to load respond.js');
+                    reject(new Error('Failed to load respond.js'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        // Initialize AI response system
+        async function initializeAISystem() {
+            try {
+                await loadRespondJS();
+
+                // Initialize your AI response system here
+                // Adjust these function names based on what's available in your respond.js
+                if (typeof window.initAI === 'function') {
+                    aiResponseSystem = window.initAI();
+                } else if (typeof window.AIResponder === 'function') {
+                    aiResponseSystem = new window.AIResponder();
+                }
+
+                console.log('AI system initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('Failed to initialize AI system:', error);
+                return false;
+            }
+        }
+
+        // Enhanced AI Assistant Functions
+        function createAssistantContainer() {
+            const assistantHTML = `
+        <div class="ai-assistant-modal" id="aiAssistantModal" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        ">
+            <div class="ai-assistant-wrapper" style="
+                width: 90%;
+                max-width: 1000px;
+                height: 80vh;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                position: relative;
+                overflow: hidden;
+                transform: scale(0.9);
+                animation: scaleIn 0.3s ease-out forwards;
+            ">
+                <div class="ai-assistant-header" style="
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 1rem 2rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                ">
+                    <h3 style="margin: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-robot"></i>
+                        AI Travel Assistant
+                        <span id="aiStatus" style="font-size: 0.8rem; opacity: 0.8; margin-left: 1rem;">Ready</span>
+                    </h3>
+                    <button class="close-assistant" style="
+                        background: none;
+                        border: none;
+                        color: white;
+                        font-size: 1.5rem;
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        border-radius: 50%;
+                        transition: background 0.3s ease;
+                        width: 40px;
+                        height: 40px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    ">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="ai-assistant-content" id="aiAssistantContent" style="
+                    height: calc(100% - 80px);
+                    overflow: hidden;
+                    display: flex;
+                ">
+                    <!-- Assistant content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    `;
+
+            document.body.insertAdjacentHTML('beforeend', assistantHTML);
+            assistantContainer = document.getElementById('aiAssistantModal');
+
+            // Add CSS animations
+            const style = document.createElement('style');
+            style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        
+        @keyframes messageSlideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes typing {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .typing-indicator {
+            animation: typing 1.5s infinite;
+        }
+    `;
+            document.head.appendChild(style);
+
+            setupAssistantEventListeners();
+        }
+
+        function setupAssistantEventListeners() {
+            // Close button functionality
+            const closeBtn = document.querySelector('.close-assistant');
+            closeBtn.addEventListener('click', closeAssistant);
+
+            // Enhanced hover effect for close button
+            closeBtn.addEventListener('mouseenter', function () {
+                this.style.background = 'rgba(255,255,255,0.2)';
+                this.style.transform = 'scale(1.1)';
+            });
+
+            closeBtn.addEventListener('mouseleave', function () {
+                this.style.background = 'none';
+                this.style.transform = 'scale(1)';
+            });
+
+            // Close on backdrop click
+            assistantContainer.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeAssistant();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && isAssistantOpen) {
+                    closeAssistant();
+                }
+            });
+        }
+
+        // Function to open AI Assistant
+        async function openAssistant() {
+            if (!assistantContainer) {
+                createAssistantContainer();
+            }
+
+            // Show loading state
+            updateAIStatus('Loading...');
+
+            // Initialize AI system if not already done
+            const aiReady = await initializeAISystem();
+
+            if (aiReady) {
+                updateAIStatus('Ready');
+            } else {
+                updateAIStatus('Offline Mode');
+            }
+
+            // Show the modal
+            assistantContainer.style.display = 'flex';
+            isAssistantOpen = true;
+            document.body.style.overflow = 'hidden';
+
+            // Load assistant content
+            loadAssistantContent();
+        }
+
+        // Function to close AI Assistant
+        function closeAssistant() {
+            if (assistantContainer) {
+                assistantContainer.style.display = 'none';
+                isAssistantOpen = false;
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Update AI status indicator
+        function updateAIStatus(status) {
+            const statusElement = document.getElementById('aiStatus');
+            if (statusElement) {
+                statusElement.textContent = status;
+                statusElement.style.animation = 'pulse 0.5s ease-in-out';
+            }
+        }
+
+        // Function to load AI Assistant content
+        function loadAssistantContent() {
+            const contentDiv = document.getElementById('aiAssistantContent');
+
+            const assistantHTML = `
+        <aside class="sidebar" style="
+            width: 300px; 
+            background: #f8f9fa; 
+            border-right: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+        ">
+            <div class="sidebar-header" style="padding: 1.5rem 1rem;">
+                <h2 style="margin: 0; color: #333; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-comments"></i>
+                    Chat Sessions
+                </h2>
+            </div>
+            
+            <nav class="nav-buttons" style="padding: 0 1rem; margin-bottom: 1rem;">
+                <button id="newChatBtn" style="
+                    width: 100%; 
+                    padding: 0.75rem; 
+                    margin-bottom: 0.5rem; 
+                    border: none; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    color: white; 
+                    border-radius: 10px; 
+                    cursor: pointer; 
+                    display: flex; 
+                    align-items: center; 
+                    gap: 0.5rem;
+                    transition: transform 0.2s ease;
+                ">
+                    <i class='fas fa-plus'></i> New Chat
+                </button>
+                <button id="historyBtn" style="
+                    width: 100%; 
+                    padding: 0.75rem; 
+                    margin-bottom: 0.5rem; 
+                    border: 1px solid #ddd; 
+                    background: white; 
+                    color: #333; 
+                    border-radius: 10px; 
+                    cursor: pointer; 
+                    display: flex; 
+                    align-items: center; 
+                    gap: 0.5rem;
+                    transition: all 0.2s ease;
+                ">
+                    <i class='fas fa-history'></i> History
+                </button>
+            </nav>
+            
+            <div class="chat-history" id="chatHistory" style="
+                flex: 1;
+                overflow-y: auto;
+                padding: 0 1rem;
+                border-top: 1px solid #e9ecef;
+                padding-top: 1rem;
+            ">
+                <p style="text-align: center; color: #666; font-size: 0.9rem; margin: 2rem 0;">
+                    No previous conversations
+                </p>
+            </div>
+        </aside>
+        
+        <main class="main" style="flex: 1; display: flex; flex-direction: column; background: white;">
+            <div class="chat-header" style="
+                padding: 1rem 2rem;
+                border-bottom: 1px solid #e9ecef;
+                background: #fff;
+            ">
+                <h3 style="margin: 0; color: #333; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-comment-dots"></i>
+                    Travel Assistant Chat
+                    <span id="typingIndicator" style="font-size: 0.8rem; color: #666; margin-left: 1rem; display: none;">
+                        AI is typing...
+                    </span>
+                </h3>
+            </div>
+            
+            <div class="chat-container" id="chatContainer" style="
+                flex: 1; 
+                padding: 2rem; 
+                overflow-y: auto;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            ">
+                <div class="greeting" style="
+                    text-align: center; 
+                    padding: 3rem 1rem;
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                    margin-bottom: 2rem;
+                ">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                    <h2 style="color: #333; margin-bottom: 1rem; font-size: 1.8rem;">
+                        Hello! I'm your AI Travel Assistant
+                    </h2>
+                    <p style="color: #666; font-size: 1.1rem; line-height: 1.6;">
+                        Ask me about destinations, travel tips, itinerary planning, or anything travel-related!<br>
+                        I'm here to help make your journey unforgettable.
+                    </p>
+                    <div class="quick-suggestions" style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+                        <button class="suggestion-btn" data-suggestion="Plan a 7-day trip to Japan" style="
+                            padding: 0.5rem 1rem;
+                            background: rgba(102, 126, 234, 0.1);
+                            border: 1px solid rgba(102, 126, 234, 0.3);
+                            border-radius: 20px;
+                            color: #667eea;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                            transition: all 0.2s ease;
+                        ">🗾 Plan Japan Trip</button>
+                        <button class="suggestion-btn" data-suggestion="Best European cities for first-time travelers" style="
+                            padding: 0.5rem 1rem;
+                            background: rgba(102, 126, 234, 0.1);
+                            border: 1px solid rgba(102, 126, 234, 0.3);
+                            border-radius: 20px;
+                            color: #667eea;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                            transition: all 0.2s ease;
+                        ">🏰 Europe Guide</button>
+                        <button class="suggestion-btn" data-suggestion="Budget travel tips for Southeast Asia" style="
+                            padding: 0.5rem 1rem;
+                            background: rgba(102, 126, 234, 0.1);
+                            border: 1px solid rgba(102, 126, 234, 0.3);
+                            border-radius: 20px;
+                            color: #667eea;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                            transition: all 0.2s ease;
+                        ">💰 Budget Tips</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container" style="
+                padding: 1.5rem 2rem; 
+                border-top: 1px solid #e9ecef;
+                background: white;
+            ">
+                <div class="input-wrapper" style="
+                    display: flex; 
+                    align-items: center; 
+                    background: #f8f9fa; 
+                    border: 2px solid #e9ecef; 
+                    border-radius: 25px; 
+                    padding: 0.5rem 1rem;
+                    transition: border-color 0.3s ease;
+                ">
+                    <input id="userInput" type="text" placeholder="Ask me about travel destinations, tips, or planning..." style="
+                        flex: 1; 
+                        border: none; 
+                        outline: none; 
+                        background: none;
+                        padding: 0.75rem; 
+                        font-size: 1rem;
+                        color: #333;
+                    " />
+                    <button id="sendBtn" style="
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                        border: none; 
+                        color: white; 
+                        padding: 0.75rem 1rem; 
+                        border-radius: 20px; 
+                        cursor: pointer; 
+                        margin-left: 0.5rem;
+                        transition: transform 0.2s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    ">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    `;
+
+            contentDiv.innerHTML = assistantHTML;
+            initializeAssistant();
+        }
+
+        // Initialize AI Assistant functionality with respond.js integration
+        function initializeAssistant() {
+            const sendBtn = document.getElementById('sendBtn');
+            const userInput = document.getElementById('userInput');
+            const chatContainer = document.getElementById('chatContainer');
+            const newChatBtn = document.getElementById('newChatBtn');
+            const historyBtn = document.getElementById('historyBtn');
+            const typingIndicator = document.getElementById('typingIndicator');
+
+            // Enhanced input focus effects
+            userInput.addEventListener('focus', function () {
+                this.closest('.input-wrapper').style.borderColor = '#667eea';
+                this.closest('.input-wrapper').style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+            });
+
+            userInput.addEventListener('blur', function () {
+                this.closest('.input-wrapper').style.borderColor = '#e9ecef';
+                this.closest('.input-wrapper').style.boxShadow = 'none';
+            });
+
+            // Button hover effects
+            [sendBtn, newChatBtn, historyBtn].forEach(btn => {
+                btn.addEventListener('mouseenter', function () {
+                    this.style.transform = 'scale(1.05)';
+                });
+
+                btn.addEventListener('mouseleave', function () {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Suggestion buttons
+            document.querySelectorAll('.suggestion-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const suggestion = this.getAttribute('data-suggestion');
+                    userInput.value = suggestion;
+                    sendMessage();
+                });
+
+                btn.addEventListener('mouseenter', function () {
+                    this.style.background = 'rgba(102, 126, 234, 0.2)';
+                    this.style.transform = 'scale(1.05)';
+                });
+
+                btn.addEventListener('mouseleave', function () {
+                    this.style.background = 'rgba(102, 126, 234, 0.1)';
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Main send message function with respond.js integration
+            async function sendMessage() {
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                // Disable input while processing
+                userInput.disabled = true;
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                // Add user message to chat
+                addMessageToChat('user', message);
+                userInput.value = '';
+
+                // Show typing indicator
+                showTypingIndicator();
+
+                try {
+                    // Get AI response using your respond.js
+                    let aiResponse;
+
+                    if (typeof window.generateResponse === 'function') {
+                        aiResponse = await window.generateResponse(message);
+                    } else if (typeof window.getAIResponse === 'function') {
+                        aiResponse = await window.getAIResponse(message);
+                    } else if (aiResponseSystem && typeof aiResponseSystem.respond === 'function') {
+                        aiResponse = await aiResponseSystem.respond(message);
+                    } else {
+                        // Fallback response if respond.js is not available
+                        aiResponse = getFallbackResponse(message);
+                    }
+
+                    // Hide typing indicator
+                    hideTypingIndicator();
+
+                    // Add AI response to chat
+                    addMessageToChat('ai', aiResponse);
+
+                } catch (error) {
+                    console.error('Error getting AI response:', error);
+                    hideTypingIndicator();
+                    addMessageToChat('ai', 'I apologize, but I encountered an error. Please try again.');
+                } finally {
+                    // Re-enable input
+                    userInput.disabled = false;
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send</span>';
+                    userInput.focus();
+                }
+            }
+
+            // Show/hide typing indicator
+            function showTypingIndicator() {
+                typingIndicator.style.display = 'inline';
+                updateAIStatus('Thinking...');
+            }
+
+            function hideTypingIndicator() {
+                typingIndicator.style.display = 'none';
+                updateAIStatus('Ready');
+            }
+
+            // Fallback responses when respond.js is not available
+            function getFallbackResponse(message) {
+                const lowerMessage = message.toLowerCase();
+
+                if (lowerMessage.includes('sri lanka')) {
+                    return "Sri Lanka is an incredible destination! I'd recommend visiting Colombo for a taste of modern city life, Kandy for cultural heritage and sacred temples, and Ella or Nuwara Eliya for breathtaking natural beauty in the hill country. The best time to visit is during the dry seasons—December to March for the west and south coasts, and May to September for the east coast. Would you like specific recommendations for any particular aspect of your Sri Lanka trip?";
+                } else if (lowerMessage.includes('colombo')) {
+                    return "Sri Lanka offers incredible diversity! For first-time visitors, I'd suggest starting with Galle, Kandy, and Ella. These locations are well-connected and offer a mix of colonial history, cultural heritage, and scenic beauty. Consider taking the train between cities for a memorable travel experience through lush landscapes. What type of Sri Lankan experience interests you most – history, nature, food, or beaches?";
+                } else if (lowerMessage.includes('budget')) {
+                    return "Here are some great budget travel tips: 1) Travel during shoulder seasons, 2) Use hostels or Airbnb instead of hotels, 3) Cook your own meals when possible, 4) Use public transportation, 5) Look for free walking tours and museums. Southeast Asia is particularly budget-friendly with countries like Thailand, Vietnam, and Indonesia offering great value. What's your approximate budget range?";
+                } else if (lowerMessage.includes('beach')) {
+                    return `
+                    Looking for a beach getaway? Here are some stunning beaches in Sri Lanka:
+
+                    <div>
+                        <h3>1. Unawatuna Beach</h3>
+                        <img src="https://feelfreetravel.com/blog/wp-content/uploads/2024/03/unawatuna-beach-min-1.jpg" alt="Unawatuna Beach" width="300" />
+                        <p>Known for golden sand, calm waters, and snorkeling spots.</p>
+
+                        <h3>2. Mirissa Beach</h3>
+                        <img src="https://lp-cms-production.imgix.net/2021-03/Mirissa_beach_Sri_Lanka.jpg?w=1920&h=640&fit=crop&crop=faces%2Cedges&auto=format&q=75" alt="Mirissa Beach" width="300" />
+                        <p>Perfect for whale watching and enjoying a relaxed beach vibe.</p>
+
+                        <h3>3. Arugam Bay</h3>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Beach_of_Arugam_Bay.jpg/500px-Beach_of_Arugam_Bay.jpg" alt="Arugam Bay" width="300" />
+                        <p>Famous among surfers and beach lovers alike.</p>
+
+                        <h3>4. Nilaveli Beach</h3>
+                        <img src="https://mysrilanka.com/uploads/destigallery/Nilaveli_Beach_11.jpg" alt="Nilaveli Beach" width="300" />
+                        <p>Located near Trincomalee, ideal for swimming and snorkeling.</p>
+                    </div>
+
+                    Are you looking for surfing, relaxing, or sightseeing on the coast?`;
+                } else if (lowerMessage.includes('mountain')) {
+                    return `
+                        Looking to explore the mountains? Sri Lanka has some breathtaking highland destinations:
+
+                        <div>
+                            <h3>1. Ella</h3>
+                            <img src="https://images.squarespace-cdn.com/content/v1/5a3bb03b4c326d76de73ddaa/9732566d-6b33-4a1a-ba0c-1b73ed8848a4/The+Common+Wanderer-9888.jpg?format=2500w" alt="Ella" width="300" />
+                            <p>Famous for the Ella Rock hike, Nine Arches Bridge, and tea plantations.</p>
+
+                            <h3>2. Nuwara Eliya</h3>
+                            <img src="https://propertyguide.lk/_next/image?url=https%3A%2F%2Fpropertyguide-store.s3.ap-southeast-1.amazonaws.com%2Fikman%2Fmedium_Swarnagiri_Maha_Viharaya_8776b97a45.jpg&w=640&q=75" alt="Nuwara Eliya" width="300" />
+                            <p>Often called "Little England", known for cool weather, tea estates, and Horton Plains.</p>
+
+                            <h3>3. Haputale</h3>
+                            <img src="https://airlinescrewtours.com/wp-content/uploads/2022/09/Ls4-600x600.jpg" alt="Haputale" width="300" />
+                            <p>Offers panoramic views and access to Lipton’s Seat and Adisham Bungalow.</p>
+
+                            <h3>4. Knuckles Mountain Range</h3>
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/6c/a9/04/cloudy-knuckles-its-heavenreal.jpg?w=1100&h=-1&s=1" alt="Knuckles Range" width="300" />
+                            <p>A UNESCO World Heritage site perfect for hiking and biodiversity exploration.</p>
+                        </div>
+
+                        Would you like recommendations for hiking trails or scenic viewpoints?`;
+                } else if (lowerMessage.includes('visa')) {
+                    return "Visa requirements vary by country and nationality. I recommend checking official embassy websites or using tools like iVisa.com. Which country are you planning to visit, and what's your nationality?";
+                } else if (lowerMessage.includes('family')) {
+                    return "Traveling with family? Great choices include Orlando (for Disney World), Japan (family-friendly culture), and Italy (history and food). Do you have young children or teenagers in the group?";
+                } else if (lowerMessage.includes('honeymoon')) {
+                    return "For a romantic honeymoon, consider places like the Maldives, Santorini, Paris, or Bora Bora. Would you prefer a beach setting, cultural escape, or nature retreat?";
+                } else if (lowerMessage.includes('solo')) {
+                    return "Solo travel can be incredibly rewarding! Consider Japan, Portugal, or Thailand for friendly locals and safety. Are you looking for adventure, relaxation, or personal growth?";
+                } else if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || lowerMessage.includes('hey')) {
+                    return "Hi! How can I assist you today with your travel plans?";
+                } else if (lowerMessage.includes('best places in colombo')) {
+                    return "This is the best top 5 places <br>  "
+                } else {
+                    return "That's a great travel question! I'd be happy to help you plan your trip. Could you provide more specific details about your destination preferences, budget, travel dates, or what type of experience you're looking for? The more information you share, the better I can assist you!";
+                }
+            }
+
+
+            // Enhanced message display function
+            function addMessageToChat(sender, message) {
+                // Remove greeting if it exists
+                const greeting = chatContainer.querySelector('.greeting');
+                if (greeting && sender === 'user') {
+                    greeting.remove();
+                }
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.style.cssText = `
+            margin-bottom: 1.5rem;
+            animation: messageSlideIn 0.3s ease-out;
+            display: flex;
+            ${sender === 'user' ? 'justify-content: flex-end;' : 'justify-content: flex-start;'}
+        `;
+
+                const messageContent = document.createElement('div');
+                messageContent.style.cssText = `
+            max-width: 80%;
+            padding: 1.2rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            ${sender === 'user' ?
+                        'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-bottom-right-radius: 5px;' :
+                        'background: white; color: #333; border-bottom-left-radius: 5px; border: 1px solid #e9ecef;'}
+        `;
+
+                const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                messageContent.innerHTML = `
+            <div style="font-size: 0.85rem; margin-bottom: 0.5rem; opacity: 0.8; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
+                ${sender === 'user' ? 'You' : 'AI Assistant'}
+                <span style="margin-left: auto; font-size: 0.75rem;">${timestamp}</span>
+            </div>
+            <div style="line-height: 1.6; font-size: 1rem;">${message}</div>
+        `;
+
+                messageDiv.appendChild(messageContent);
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // New chat functionality
+            newChatBtn.addEventListener('click', function () {
+                chatContainer.innerHTML = '';
+                loadAssistantContent();
+            });
+
+            // Focus on input
+            setTimeout(() => userInput.focus(), 100);
+        }
+
+        // Enhanced navbar and page functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (navbar) {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // AI Assistant Button Click Handler
+            const aiBtn = document.getElementById('aiAssistantBtn');
+            if (aiBtn) {
+                aiBtn.addEventListener('click', function () {
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+
+                    // Open the AI Assistant
+                    openAssistant();
+                });
+            }
+
+            // Initialize AI system on page load
+            initializeAISystem();
+        });
+
+        // Export functions for global access
+        window.openAssistant = openAssistant;
+        window.closeAssistant = closeAssistant;
+
+        
+    </script>
+
+     <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation for statistics
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start).toLocaleString();
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            }
+            updateCounter();
+        }
+
+        // Observe stats section for counter animation
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        animateCounter(counter, target);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+        
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.destination-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Dynamic greeting based on time
+        function updateGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            const heroTitle = document.querySelector('.hero h1');
+            
+            if (hour < 12) {
+                heroTitle.textContent = 'Good Morning, Explorer!';
+            } else if (hour < 18) {
+                heroTitle.textContent = 'Good Afternoon, Adventurer!';
+            } else {
+                heroTitle.textContent = 'Good Evening, Wanderer!';
+            }
+        }
+
+        // Call updateGreeting on page load
+        updateGreeting();
+
+        // Add search functionality (you can expand this)
+        function addSearchBar() {
+            const searchHTML = `
+                <div class="search-container" style="margin-top: 2rem; text-align: center;">
+                    <div style="position: relative; display: inline-block; width: 100%; max-width: 500px;">
+                        <input type="text" id="destinationSearch" placeholder="Search destinations..." 
+                               style="width: 100%; padding: 1rem 1.5rem; border: none; border-radius: 50px; 
+                                      box-shadow: var(--shadow); font-size: 1.1rem; outline: none;
+                                      background: var(--bg-white);">
+                        <i class="fas fa-search" style="position: absolute; right: 1.5rem; top: 50%; 
+                                                       transform: translateY(-50%); color: var(--text-light);"></i>
+                    </div>
+                </div>
+            `;
+            
+            const destinationsSection = document.querySelector('#destinations .section-header');
+            destinationsSection.insertAdjacentHTML('afterend', searchHTML);
+            
+            // Add search functionality
+            document.getElementById('destinationSearch').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.destination-card');
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeInUp 0.5s ease-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Add search bar after page loads
+        setTimeout(addSearchBar, 1000);
+
+        // Add weather widget placeholder
+        function addWeatherWidget() {
+            const weatherHTML = `
+                <div class="weather-widget" style="position: fixed; top: 100px; left: 2rem; 
+                                                  background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+                                                  padding: 1rem; border-radius: 15px; box-shadow: var(--shadow);
+                                                  z-index: 999; max-width: 200px; display: none;" id="weatherWidget">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--text-dark);">Local Weather</h4>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-sun" style="color: #ffc107; font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-weight: 600;">25°C</div>
+                            <div style="font-size: 0.8rem; color: var(--text-light);">Sunny</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', weatherHTML);
+            
+            // Show weather widget after 3 seconds
+            setTimeout(() => {
+                document.getElementById('weatherWidget').style.display = 'block';
+            }, 3000);
+        }
+
+        // Add weather widget
+        addWeatherWidget();
+
+        // Add typing effect to hero subtitle
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Apply typing effect
+        setTimeout(() => {
+            const subtitle = document.querySelector('.hero p');
+            const originalText = subtitle.textContent;
+            typeWriter(subtitle, originalText, 30);
+        }, 1500);
+    </script>
+
+</body>
+
+</html>
